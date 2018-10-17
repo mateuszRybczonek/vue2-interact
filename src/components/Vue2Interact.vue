@@ -11,11 +11,6 @@
 <script>
 import interact from 'interact.js';
 import InteractEventBus from '../interact-event-bus';
-import {
-  $INTERACT_DRAGGED_DOWN,
-  $INTERACT_DRAGGED_LEFT,
-  $INTERACT_DRAGGED_RIGHT,
-} from '../consts';
 
 export default {
   interactOutOfSightXCoordinate: 500,
@@ -56,6 +51,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    interactEventBusEvents: {
+      type: Object,
+      default: () => {},
+    }
   },
 
   data() {
@@ -88,9 +87,23 @@ export default {
   },
 
   mounted() {
-    InteractEventBus.$on($INTERACT_DRAGGED_DOWN, this.draggedDown);
-    InteractEventBus.$on($INTERACT_DRAGGED_LEFT, this.draggedLeft);
-    InteractEventBus.$on($INTERACT_DRAGGED_RIGHT, this.draggedRight);
+    if (this.interactEventBusEvents && Object.keys(this.interactEventBusEvents).length === 0) {
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.draggedDown);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedRight, this.draggedRight);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedUp, this.draggedUp);
+      };
+    }
 
     const element = this.$refs.interactElement;
 
@@ -133,9 +146,23 @@ export default {
   },
 
   beforeDestroy() {
-    InteractEventBus.$off($INTERACT_DRAGGED_DOWN, this.draggedDown);
-    InteractEventBus.$off($INTERACT_DRAGGED_LEFT, this.draggedLeft);
-    InteractEventBus.$off($INTERACT_DRAGGED_RIGHT, this.draggedRight);
+    if (this.interactEventBusEvents && Object.keys(this.interactEventBusEvents).length === 0) {
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$off(this.interactEventBusEvents.draggedDown, this.draggedDown);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$off(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$off(this.interactEventBusEvents.draggedRight, this.draggedRight);
+      };
+
+      if (this.interactEventBusEvents.draggedDown) {
+        InteractEventBus.$off(this.interactEventBusEvents.draggedUp, this.draggedUp);
+      };
+    }
   },
 
   methods: {
@@ -164,6 +191,13 @@ export default {
         rotation: this.interactMaxRotation,
       });
       this.$emit('draggedRight');
+    },
+
+    draggedUp() {
+      if (!this.interactIsCurrent) return;
+      this.interactUnsetElement();
+      this.interactSetPosition({ y: -this.$options.interactOutOfSightYCoordinate });
+      this.$emit('draggedUp');
     },
 
     interactSetPosition(coordinates) {
