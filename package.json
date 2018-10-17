@@ -22,6 +22,9 @@
     "pretest": "yarn lint",
     "prepare": "yarn build"
   },
+  "dependencies": {
+    "interact.js": "^1.2.8"
+  },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -46,6 +49,11 @@
   },
   "peerDependencies": {
     "vue": "^2.5.17"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "repository": {
     "type": "git",
