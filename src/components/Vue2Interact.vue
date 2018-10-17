@@ -18,6 +18,11 @@ import {
 } from '../consts';
 
 export default {
+  interactOutOfSightXCoordinate: 500,
+  interactOutOfSightYCoordinate: 1000,
+  interactYThreshold: 300,
+  interactXThreshold: 200,
+
   props: {
     interactIsCurrent: {
       type: Boolean,
@@ -62,10 +67,6 @@ export default {
         y: 0,
         rotation: 0,
       },
-      interactOutOfSightXCoordinate: 500,
-      interactOutOfSightYCoordinate: 1000,
-      interactYThreshold: 300,
-      interactXThreshold: 200,
     };
   },
 
@@ -78,6 +79,7 @@ export default {
 
       return null;
     },
+
     interactTransitionString() {
       if (this.interactAnimating) return 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
@@ -109,7 +111,7 @@ export default {
         else if (this.interactLockSwipeDown && event.dy > 0) y = 0;
         else y = this.interactLockYAxis ? 0 : (this.interactPosition.y || 0) + event.dy;
 
-        let rotation = this.interactMaxRotation * (x / this.interactXThreshold);
+        let rotation = this.interactMaxRotation * (x / this.$options.interactXThreshold);
 
         if (rotation > this.interactMaxRotation) rotation = this.interactMaxRotation;
         else if (rotation < -this.interactMaxRotation) rotation = -this.interactMaxRotation;
@@ -119,12 +121,12 @@ export default {
 
       onend: () => {
         const cardPositionX = this.interactPosition.x;
-        const { interactXThreshold } = this;
+        const { interactXThreshold, interactYThreshold } = this.$options;
         this.interactAnimating = true;
 
         if (cardPositionX > interactXThreshold) this.draggedRight();
         else if (cardPositionX < -interactXThreshold) this.draggedLeft();
-        else if (this.interactPosition.y > this.interactYThreshold) this.draggedDown();
+        else if (this.interactPosition.y > interactYThreshold) this.draggedDown();
         else this.interactSetPosition({ x: 0, y: 0, rotation: 0 });
       },
     });
@@ -140,7 +142,7 @@ export default {
     draggedDown() {
       if (!this.interactIsCurrent) return;
       this.interactUnsetElement();
-      this.interactSetPosition({ y: this.interactOutOfSightYCoordinate });
+      this.interactSetPosition({ y: this.$options.interactOutOfSightYCoordinate });
       this.$emit('draggedDown');
     },
 
@@ -148,7 +150,7 @@ export default {
       if (!this.interactIsCurrent) return;
       this.interactUnsetElement();
       this.interactSetPosition({
-        x: -this.interactOutOfSightXCoordinate,
+        x: -this.$options.interactOutOfSightXCoordinate,
         rotation: -this.interactMaxRotation,
       });
       this.$emit('draggedLeft');
@@ -158,7 +160,7 @@ export default {
       if (!this.interactIsCurrent) return;
       this.interactUnsetElement();
       this.interactSetPosition({
-        x: this.interactOutOfSightXCoordinate,
+        x: this.$options.interactOutOfSightXCoordinate,
         rotation: this.interactMaxRotation,
       });
       this.$emit('draggedRight');
@@ -179,10 +181,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.vue-interact-animated {
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-</style>
-
