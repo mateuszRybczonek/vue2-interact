@@ -16,9 +16,6 @@ yarn add vue2-interact
 import Vue from 'vue'
 import Vue2Interact from 'vue2-interact'
 
-// You need a specific loader for CSS files like https://github.com/webpack/css-loader
-import 'vue2-interact/dist/vue2-interact.css'
-
 export default {
   components: {
     Vue2Interact
@@ -31,11 +28,9 @@ export default {
 ```html
 <!-- Include after Vue -->
 <!-- Local files -->
-<link rel="stylesheet" href="vue2-interact/dist/vue2-interact.css"></link>
 <script src="vue2-interact/dist/vue2-interact.js"></script>
 
 <!-- From CDN -->
-<link rel="stylesheet" href="https://unpkg.com/vue2-interact/dist/vue2-interact.css"></link>
 <script src="https://unpkg.com/vue2-interact"></script>
 ```
 
