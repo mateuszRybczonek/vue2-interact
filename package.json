@@ -1,0 +1,62 @@
+{
+  "name": "vue2-interact",
+  "version": "1.0.0",
+  "description": "Interact wrapper component for Vue.js apps",
+  "author": "Mateusz Rybczonek <m.rybczonek@gmail.com>",
+  "main": "dist/vue2-interact.common.js",
+  "module": "dist/vue2-interact.esm.js",
+  "browser": "dist/vue2-interact.js",
+  "unpkg": "dist/vue2-interact.js",
+  "style": "dist/vue2-interact.css",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=production rollup -c",
+    "watch": "NODE_ENV=dev rollup -c -w",
+    "lint": "yarn lint:js && yarn lint:css",
+    "lint:js": "eslint --ext .js,.vue src",
+    "lint:js:fix": "yarn lint:js --fix",
+    "lint:css": "stylelint src/**/*.{vue,css}",
+    "pretest": "yarn lint",
+    "prepare": "yarn build"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-css": "^4.1.11",
+    "eslint": "^3.19.0",
+    "eslint-plugin-vue": "^4.5.0",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^3.0.6",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "rollup-plugin-vue": "^2.3.0",
+    "stylelint": "^7.10.0",
+    "stylelint-config-standard": "^16.0.0",
+    "stylelint-processor-arbitrary-tags": "^0.1.0",
+    "vue": "^2.5.17"
+  },
+  "peerDependencies": {
+    "vue": "^2.5.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateuszRybczonek/vue2-interact.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mateuszRybczonek/vue2-interact/issues"
+  },
+  "homepage": "https://github.com/mateuszRybczonek/vue2-interact#readme",
+  "license": "MIT",
+  "browserslist": [
+    "last 2 versions"
+  ]
+}
