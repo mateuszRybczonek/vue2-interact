@@ -1,4 +1,5 @@
 import Vue2Interact from './components/Vue2Interact.vue'
+import InteractEventBus from './interact-event-bus.js';
 
 const plugin = {
   install (Vue) {
@@ -7,6 +8,7 @@ const plugin = {
 }
 
 export default Vue2Interact;
+export { InteractEventBus };
 
 // Auto-install
 let GlobalVue = null

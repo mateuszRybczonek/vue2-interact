@@ -103,7 +103,7 @@ export default {
   },
 
   mounted() {
-    if (this.interactEventBusEvents && Object.keys(this.interactEventBusEvents).length === 0) {
+    if (this.interactEventBusEvents) {
       if (this.interactEventBusEvents.draggedDown) {
         InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.interactDraggedDown);
       };
