@@ -19,6 +19,26 @@ export default {
   interactXThreshold: 200,
 
   props: {
+    interactBlockDragDown: {
+      type: Boolean,
+      default: false,
+    },
+    interactBlockDragLeft: {
+      type: Boolean,
+      default: false,
+    },
+    interactBlockDragRight: {
+      type: Boolean,
+      default: false,
+    },
+    interactBlockDragUp: {
+      type: Boolean,
+      default: false,
+    },
+    interactEventBusEvents: {
+      type: Object,
+      default: () => {},
+    },
     interactIsCurrent: {
       type: Boolean,
       default: true,
@@ -51,10 +71,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    interactEventBusEvents: {
-      type: Object,
-      default: () => {},
-    }
   },
 
   data() {
@@ -89,19 +105,19 @@ export default {
   mounted() {
     if (this.interactEventBusEvents && Object.keys(this.interactEventBusEvents).length === 0) {
       if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.draggedDown);
+        InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.interactDraggedDown);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
+      if (this.interactEventBusEvents.draggedLeft) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedLeft, this.interactDraggedLeft);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedRight, this.draggedRight);
+      if (this.interactEventBusEvents.draggedRight) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedRight, this.interactDraggedRight);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedUp, this.draggedUp);
+      if (this.interactEventBusEvents.draggedUp) {
+        InteractEventBus.$on(this.interactEventBusEvents.draggedUp, this.interactDraggedUp);
       };
     }
 
@@ -133,14 +149,14 @@ export default {
       },
 
       onend: () => {
-        const cardPositionX = this.interactPosition.x;
+        const { x: cardPositionX, y: cardPositionY } = this.interactPosition;
         const { interactXThreshold, interactYThreshold } = this.$options;
         this.interactAnimating = true;
 
-        if (cardPositionX > interactXThreshold) this.draggedRight();
-        else if (cardPositionX < -interactXThreshold) this.draggedLeft();
-        else if (this.interactPosition.y > interactYThreshold) this.draggedDown();
-        else this.interactSetPosition({ x: 0, y: 0, rotation: 0 });
+        if (cardPositionX > interactXThreshold) this.interactDraggedRight();
+        else if (cardPositionX < -interactXThreshold) this.interactDraggedLeft();
+        else if (cardPositionY > interactYThreshold) this.interactDraggedDown();
+        else this.interactResetCardPosition();
       },
     });
   },
@@ -151,30 +167,38 @@ export default {
         InteractEventBus.$off(this.interactEventBusEvents.draggedDown, this.draggedDown);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
+      if (this.interactEventBusEvents.draggedLeft) {
         InteractEventBus.$off(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
+      if (this.interactEventBusEvents.draggedRight) {
         InteractEventBus.$off(this.interactEventBusEvents.draggedRight, this.draggedRight);
       };
 
-      if (this.interactEventBusEvents.draggedDown) {
+      if (this.interactEventBusEvents.draggedUp) {
         InteractEventBus.$off(this.interactEventBusEvents.draggedUp, this.draggedUp);
       };
     }
   },
 
   methods: {
-    draggedDown() {
+    interactDraggedDown() {
       if (!this.interactIsCurrent) return;
+      if (this.interactBlockDragDown) {
+        this.interactResetCardPosition();
+        return;
+      }
       this.interactUnsetElement();
       this.interactSetPosition({ y: this.$options.interactOutOfSightYCoordinate });
       this.$emit('draggedDown');
     },
 
-    draggedLeft() {
+    interactDraggedLeft() {
       if (!this.interactIsCurrent) return;
+      if (this.interactBlockDragLeft) {
+        this.interactResetCardPosition();
+        return;
+      }
       this.interactUnsetElement();
       this.interactSetPosition({
         x: -this.$options.interactOutOfSightXCoordinate,
@@ -183,8 +207,12 @@ export default {
       this.$emit('draggedLeft');
     },
 
-    draggedRight() {
+    interactDraggedRight() {
       if (!this.interactIsCurrent) return;
+      if (this.interactBlockDragRight) {
+        this.interactResetCardPosition();
+        return;
+      }
       this.interactUnsetElement();
       this.interactSetPosition({
         x: this.$options.interactOutOfSightXCoordinate,
@@ -193,8 +221,12 @@ export default {
       this.$emit('draggedRight');
     },
 
-    draggedUp() {
+    interactDraggedUp() {
       if (!this.interactIsCurrent) return;
+      if (this.interactBlockDragUp) {
+        this.interactResetCardPosition();
+        return;
+      }
       this.interactUnsetElement();
       this.interactSetPosition({ y: -this.$options.interactOutOfSightYCoordinate });
       this.$emit('draggedUp');
@@ -212,6 +244,10 @@ export default {
       interact(this.$refs.interactElement).unset();
       this.interactDragged = true;
     },
+
+    interactResetCardPosition() {
+      this.interactSetPosition({ x: 0, y: 0, rotation: 0 });
+    }
   },
 };
 </script>
