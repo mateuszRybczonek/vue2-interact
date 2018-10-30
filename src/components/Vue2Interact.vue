@@ -1,8 +1,11 @@
 <template>
   <div
     ref="interactElement"
-    :class="{ 'vue-interact-animated': interactAnimating }"
-    :style="{ transform: interactTransformString, transition: interactTransitionString }"
+    :class="{ 'vue-interact-animated': interactIsAnimating }"
+    :style="{
+      transform: interactTransformString,
+      transition: interactTransitionString
+    }"
   >
     <slot />
   </div>
@@ -75,7 +78,7 @@ export default {
 
   data() {
     return {
-      interactAnimating: true,
+      interactIsAnimating: true,
       interactDragged: null,
       interactPosition: {
         x: 0,
@@ -87,7 +90,7 @@ export default {
 
   computed: {
     interactTransformString() {
-      if (!this.interactAnimating || this.interactDragged) {
+      if (!this.interactIsAnimating || this.interactDragged) {
         const { x, y, rotation } = this.interactPosition;
         return `translate3D(${x}px, ${y}px, 0) rotate(${rotation}deg)`;
       }
@@ -96,36 +99,26 @@ export default {
     },
 
     interactTransitionString() {
-      if (this.interactAnimating) return 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      if (this.interactIsAnimating) return 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
       return null;
     },
   },
 
+  watch: {
+    interactEventBusEvents(val) {
+      this.interactSetEventBusEvents();
+    },
+  },
+
   mounted() {
-    if (this.interactEventBusEvents) {
-      if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.interactDraggedDown);
-      };
-
-      if (this.interactEventBusEvents.draggedLeft) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedLeft, this.interactDraggedLeft);
-      };
-
-      if (this.interactEventBusEvents.draggedRight) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedRight, this.interactDraggedRight);
-      };
-
-      if (this.interactEventBusEvents.draggedUp) {
-        InteractEventBus.$on(this.interactEventBusEvents.draggedUp, this.interactDraggedUp);
-      };
-    }
+    this.interactSetEventBusEvents();
 
     const element = this.$refs.interactElement;
 
     interact(element).draggable({
       onstart: () => {
-        this.interactAnimating = false;
+        this.interactIsAnimating = false;
       },
 
       onmove: (event) => {
@@ -151,7 +144,7 @@ export default {
       onend: () => {
         const { x: cardPositionX, y: cardPositionY } = this.interactPosition;
         const { interactXThreshold, interactYThreshold } = this.$options;
-        this.interactAnimating = true;
+        this.interactIsAnimating = true;
 
         if (cardPositionX > interactXThreshold) this.interactDraggedRight();
         else if (cardPositionX < -interactXThreshold) this.interactDraggedLeft();
@@ -162,23 +155,7 @@ export default {
   },
 
   beforeDestroy() {
-    if (this.interactEventBusEvents && Object.keys(this.interactEventBusEvents).length === 0) {
-      if (this.interactEventBusEvents.draggedDown) {
-        InteractEventBus.$off(this.interactEventBusEvents.draggedDown, this.draggedDown);
-      };
-
-      if (this.interactEventBusEvents.draggedLeft) {
-        InteractEventBus.$off(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
-      };
-
-      if (this.interactEventBusEvents.draggedRight) {
-        InteractEventBus.$off(this.interactEventBusEvents.draggedRight, this.draggedRight);
-      };
-
-      if (this.interactEventBusEvents.draggedUp) {
-        InteractEventBus.$off(this.interactEventBusEvents.draggedUp, this.draggedUp);
-      };
-    }
+    this.interactUnsetEventBusEvents();
   },
 
   methods: {
@@ -232,6 +209,26 @@ export default {
       this.$emit('draggedUp');
     },
 
+    interactSetEventBusEvents() {
+      if (this.interactEventBusEvents) {
+        if (this.interactEventBusEvents.draggedDown) {
+          InteractEventBus.$on(this.interactEventBusEvents.draggedDown, this.interactDraggedDown);
+        };
+
+        if (this.interactEventBusEvents.draggedLeft) {
+          InteractEventBus.$on(this.interactEventBusEvents.draggedLeft, this.interactDraggedLeft);
+        };
+
+        if (this.interactEventBusEvents.draggedRight) {
+          InteractEventBus.$on(this.interactEventBusEvents.draggedRight, this.interactDraggedRight);
+        };
+
+        if (this.interactEventBusEvents.draggedUp) {
+          InteractEventBus.$on(this.interactEventBusEvents.draggedUp, this.interactDraggedUp);
+        };
+      }
+    },
+
     interactSetPosition(coordinates) {
       const { x, y, rotation } = coordinates;
 
@@ -243,6 +240,26 @@ export default {
     interactUnsetElement() {
       interact(this.$refs.interactElement).unset();
       this.interactDragged = true;
+    },
+
+    interactUnsetEventBusEvents() {
+      if (this.interactEventBusEvents) {
+        if (this.interactEventBusEvents.draggedDown) {
+          InteractEventBus.$off(this.interactEventBusEvents.draggedDown, this.draggedDown);
+        };
+
+        if (this.interactEventBusEvents.draggedLeft) {
+          InteractEventBus.$off(this.interactEventBusEvents.draggedLeft, this.draggedLeft);
+        };
+
+        if (this.interactEventBusEvents.draggedRight) {
+          InteractEventBus.$off(this.interactEventBusEvents.draggedRight, this.draggedRight);
+        };
+
+        if (this.interactEventBusEvents.draggedUp) {
+          InteractEventBus.$off(this.interactEventBusEvents.draggedUp, this.draggedUp);
+        };
+      }
     },
 
     interactResetCardPosition() {
