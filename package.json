@@ -47,7 +47,8 @@
     "stylelint": "^7.10.0",
     "stylelint-config-standard": "^16.0.0",
     "stylelint-processor-arbitrary-tags": "^0.1.0",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vuepress": "^0.14.4"
   },
   "peerDependencies": {
     "vue": "^2.5.17"
