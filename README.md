@@ -10,28 +10,15 @@ yarn add vue2-interact
 
 ## Usage
 
-### Bundler (Webpack, Rollup)
-
 ```js
 import Vue from 'vue'
-import Vue2Interact from 'vue2-interact'
+import { Vue2InteractDraggable } from 'vue2-interact'
 
 export default {
   components: {
-    Vue2Interact
+    Vue2InteractDraggable
   }
 }
-```
-
-### Browser
-
-```html
-<!-- Include after Vue -->
-<!-- Local files -->
-<script src="vue2-interact/dist/vue2-interact.js"></script>
-
-<!-- From CDN -->
-<script src="https://unpkg.com/vue2-interact"></script>
 ```
 
 ## Development
@@ -49,7 +36,6 @@ Bundle the js and css of to the `dist` folder:
 ```bash
 yarn build
 ```
-
 
 ## Publishing
 

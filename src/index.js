@@ -1,13 +1,13 @@
-import Vue2Interact from './components/Vue2Interact.vue'
+import Vue2InteractDraggable from './components/Vue2InteractDraggable.vue'
 import InteractEventBus from './interact-event-bus.js';
 
 const plugin = {
   install (Vue) {
-    Vue.component('Vue2Interact', Vue2Interact)
+    Vue.component('Vue2InteractDraggable', Vue2InteractDraggable)
   }
 }
 
-export default Vue2Interact;
+export { Vue2InteractDraggable };
 export { InteractEventBus };
 
 // Auto-install
