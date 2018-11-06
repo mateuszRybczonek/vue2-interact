@@ -20,7 +20,9 @@
     "lint:js:fix": "yarn lint:js --fix",
     "lint:css": "stylelint src/**/*.{vue,css}",
     "pretest": "yarn lint",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "docs:dev": "vuepress dev",
+    "docs:build": "vuepress build"
   },
   "dependencies": {
     "interact.js": "^1.2.8"
