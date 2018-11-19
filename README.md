@@ -1,6 +1,6 @@
 # vue2-interact
 
-> Interact wrapper component for Vue.js apps
+> [interact.js](http://interactjs.io/) wrapper component for Vue.js apps
 
 ## Installation
 
