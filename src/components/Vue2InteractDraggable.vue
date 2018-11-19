@@ -16,11 +16,6 @@ import interact from 'interact.js';
 import InteractEventBus from '../interact-event-bus';
 
 export default {
-  interactOutOfSightXCoordinate: 500,
-  interactOutOfSightYCoordinate: 1000,
-  interactYThreshold: 300,
-  interactXThreshold: 200,
-
   props: {
     interactBlockDragDown: {
       type: Boolean,
@@ -41,10 +36,6 @@ export default {
     interactEventBusEvents: {
       type: Object,
       default: () => {},
-    },
-    interactIsCurrent: {
-      type: Boolean,
-      default: true,
     },
     interactMaxRotation: {
       type: Number,
@@ -73,6 +64,22 @@ export default {
     interactLockSwipeUp: {
       type: Boolean,
       default: false,
+    },
+    interactOutOfSightXCoordinate: {
+      type: Number,
+      default: 500,
+    },
+    interactOutOfSightYCoordinate: {
+      type: Number,
+      default: 1000,
+    },
+    interactXThreshold: {
+      type: Number,
+      default: 200,
+    },
+    interactYThreshold: {
+      type: Number,
+      default: 300,
     },
   },
 
@@ -133,7 +140,7 @@ export default {
         else if (this.interactLockSwipeDown && event.dy > 0) y = 0;
         else y = this.interactLockYAxis ? 0 : (this.interactPosition.y || 0) + event.dy;
 
-        let rotation = this.interactMaxRotation * (x / this.$options.interactXThreshold);
+        let rotation = this.interactMaxRotation * (x / this.interactXThreshold);
 
         if (rotation > this.interactMaxRotation) rotation = this.interactMaxRotation;
         else if (rotation < -this.interactMaxRotation) rotation = -this.interactMaxRotation;
@@ -143,7 +150,7 @@ export default {
 
       onend: () => {
         const { x: cardPositionX, y: cardPositionY } = this.interactPosition;
-        const { interactXThreshold, interactYThreshold } = this.$options;
+        const { interactXThreshold, interactYThreshold } = this;
         this.interactIsAnimating = true;
 
         if (cardPositionX > interactXThreshold) this.interactDraggedRight();
@@ -155,57 +162,54 @@ export default {
   },
 
   beforeDestroy() {
+    interact(this.$refs.interactElement).unset();
     this.interactUnsetEventBusEvents();
   },
 
   methods: {
     interactDraggedDown() {
-      if (!this.interactIsCurrent) return;
       if (this.interactBlockDragDown) {
         this.interactResetCardPosition();
         return;
       }
       this.interactUnsetElement();
-      this.interactSetPosition({ y: this.$options.interactOutOfSightYCoordinate });
+      this.interactSetPosition({ y: this.interactOutOfSightYCoordinate });
       this.$emit('draggedDown');
     },
 
     interactDraggedLeft() {
-      if (!this.interactIsCurrent) return;
       if (this.interactBlockDragLeft) {
         this.interactResetCardPosition();
         return;
       }
       this.interactUnsetElement();
       this.interactSetPosition({
-        x: -this.$options.interactOutOfSightXCoordinate,
+        x: -this.interactOutOfSightXCoordinate,
         rotation: -this.interactMaxRotation,
       });
       this.$emit('draggedLeft');
     },
 
     interactDraggedRight() {
-      if (!this.interactIsCurrent) return;
       if (this.interactBlockDragRight) {
         this.interactResetCardPosition();
         return;
       }
       this.interactUnsetElement();
       this.interactSetPosition({
-        x: this.$options.interactOutOfSightXCoordinate,
+        x: this.interactOutOfSightXCoordinate,
         rotation: this.interactMaxRotation,
       });
       this.$emit('draggedRight');
     },
 
     interactDraggedUp() {
-      if (!this.interactIsCurrent) return;
       if (this.interactBlockDragUp) {
         this.interactResetCardPosition();
         return;
       }
       this.interactUnsetElement();
-      this.interactSetPosition({ y: -this.$options.interactOutOfSightYCoordinate });
+      this.interactSetPosition({ y: -this.interactOutOfSightYCoordinate });
       this.$emit('draggedUp');
     },
 
@@ -230,11 +234,13 @@ export default {
     },
 
     interactSetPosition(coordinates) {
-      const { x, y, rotation } = coordinates;
+      const {
+        x = 0,
+        y = 0,
+        rotation = 0
+      } = coordinates;
 
-      if (Number.isFinite(x)) this.interactPosition.x = x;
-      if (Number.isFinite(y)) this.interactPosition.y = y;
-      if (Number.isFinite(rotation)) this.interactPosition.rotation = rotation;
+      this.interactPosition = {x, y, rotation };
     },
 
     interactUnsetElement() {
