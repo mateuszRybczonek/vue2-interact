@@ -1,0 +1,57 @@
+@mixin _position($position, $args) {
+  @each $dir in top, left, bottom, right {
+    $i: index($args, $dir);
+
+    @if $i {
+      #{$dir}: nth($args, $i + 1);
+    }
+  }
+
+  position: $position;
+}
+
+@mixin absolute($args) {
+  @include _position(absolute, $args);
+}
+
+@mixin card() {
+  border-radius: 15px;
+  box-shadow: 0 30px 30px 0 rgba(0, 0, 0, 0.05);
+}
+
+@mixin sizing($args, $prefix: "") {
+  $width: if(length($args) == 2, nth($args, 1), $args);
+  $height: if(length($args) == 2, nth($args, 2), $args);
+
+  #{$prefix}width: $width;
+  #{$prefix}height: $height;
+}
+
+@mixin flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin circle($args) {
+  @include sizing($args);
+
+  border-radius: 50%;
+}
+
+
+@mixin after() {
+  &::after {
+    content: "";
+
+    @content;
+  }
+}
+
+@mixin before() {
+  &::before {
+    content: '';
+
+    @content;
+  }
+}

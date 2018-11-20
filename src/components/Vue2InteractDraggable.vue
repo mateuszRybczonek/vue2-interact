@@ -16,6 +16,8 @@ import interact from 'interact.js';
 import InteractEventBus from '../interact-event-bus';
 
 export default {
+  name: 'Vue2InteractDraggable',
+
   props: {
     interactBlockDragDown: {
       type: Boolean,
@@ -156,6 +158,7 @@ export default {
         if (cardPositionX > interactXThreshold) this.interactDraggedRight();
         else if (cardPositionX < -interactXThreshold) this.interactDraggedLeft();
         else if (cardPositionY > interactYThreshold) this.interactDraggedDown();
+        else if (cardPositionY < -interactYThreshold) this.interactDraggedUp();
         else this.interactResetCardPosition();
       },
     });

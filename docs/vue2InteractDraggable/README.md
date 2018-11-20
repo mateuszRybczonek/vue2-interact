@@ -2,7 +2,7 @@
 
 > interact.js draggable wrapper component for Vue.js
 
-## Usage
+## Basic usage
 
 ### 1. Import component
 ```js
@@ -20,16 +20,97 @@ export default {
 ```html
 <Vue2InteractDraggable
   @draggedRight="draggedRight"
-  :interact-block-drag-down="isDragDownDisabled"
   :interact-max-rotation="15"
-  :interact-event-bus-events="isCurrent ? interactEventBusEvents : null"
-  :interact-lock-y-axis="true"
-  :interact-lock-swipe-down="true"
-  :interact-out-of-sight-x-coordinate="1000"
+  :interact-out-of-sight-x-coordinate="500"
   :interact-x-threshold="200"
 >
   <div>
-    <h3>Element Title</h3>
+    <h3>Drag me!</h3>
   </div>
 </Vue2InteractDraggable>
 ```
+
+### 3. Demo
+
+
+<DemoInteractDraggable />
+
+[Sandbox example](https://codesandbox.io/s/241qzvq41y)
+
+## Listeners
+
+### draggedRight
+
+Function fired when element is dragged right from its original position by distance specified in `interact-x-threshold` property.
+
+### draggedLeft
+
+Function fired when element is dragged left from its original position by distance specified in `interact-x-threshold` property.
+
+### draggedUp
+
+Function fired when element is dragged up from its original position by distance specified in `interact-y-threshold` property.
+
+### draggedDown
+
+Function fired when element is dragged down from its original position by distance specified in `interact-y-threshold` property.
+
+## Properties
+
+### interact-block
+
+- type: Boolean
+- default: false
+
+- available types:
+  - `interact-block-drag-down`
+  - `interact-block-drag-up`
+  - `interact-block-drag-left`
+  - `interact-block-drag-right`
+
+Prevent an event from being fired when the element is dragged in certain direction.
+
+### interact-max-rotation
+
+- type: Number
+- default: 0
+
+Specify maximum rotation in degrees to which the element is rotated during horizontal drag.
+
+### interact-lock
+
+- type: Boolean
+- default: false
+
+- available types:
+  - `interact-lock-x-axis`
+  - `interact-lock-y-axis`
+  - `interact-lock-swipe-down`
+  - `interact-lock-swipe-up`
+  - `interact-lock-swipe-left`
+  - `interact-lock-swipe-right`
+
+Prevent swiping in specified axis or direction.
+
+    interactEventBusEvents: {
+      type: Object,
+      default: () => {},
+    },
+
+   
+    interactOutOfSightXCoordinate: {
+      type: Number,
+      default: 500,
+    },
+    interactOutOfSightYCoordinate: {
+      type: Number,
+      default: 1000,
+    },
+    interactXThreshold: {
+      type: Number,
+      default: 200,
+    },
+    interactYThreshold: {
+      type: Number,
+      default: 300,
+    },
