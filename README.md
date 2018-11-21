@@ -8,6 +8,9 @@
 yarn add vue2-interact
 ```
 
+## Documentation
+> [Go to docs and demo](https://vue2-interact.netlify.com/)
+
 ## Usage
 
 ```js
