@@ -92,25 +92,30 @@ Specify maximum rotation in degrees to which the element is rotated during horiz
 
 Prevent swiping in specified axis or direction.
 
-    interactEventBusEvents: {
-      type: Object,
-      default: () => {},
-    },
+### interact-x-threshold
 
-   
-    interactOutOfSightXCoordinate: {
-      type: Number,
-      default: 500,
-    },
-    interactOutOfSightYCoordinate: {
-      type: Number,
-      default: 1000,
-    },
-    interactXThreshold: {
-      type: Number,
-      default: 200,
-    },
-    interactYThreshold: {
-      type: Number,
-      default: 300,
-    },
+- type: Number
+- default: 200
+
+Horizontal (X) distance to which the element must be dragged to fire the appropriate event.
+
+### interact-y-threshold
+
+- type: Number
+- default: 300
+
+Vertical (Y) distance to which the element must be dragged to fire the appropriate event.
+
+### interact-out-of-sight-x-coordinate
+
+- type: Number
+- default: 500
+
+Horizontal (X) distance to which the element will be moved when horizontal (X) threshold is met at the end of drag.
+
+### interact-out-of-sight-y-coordinate
+
+- type: Number
+- default: 1000
+
+Vertical (Y) distance to which the element will be moved when vertical (Y) threshold is met at the end of drag.

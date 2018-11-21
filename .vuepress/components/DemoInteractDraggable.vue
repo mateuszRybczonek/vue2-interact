@@ -165,12 +165,7 @@ export default {
 <style lang="scss" scoped>
 @import "./styles/index.scss";
 
-$cardsTotal: 3;
 $cardsWidth: 300px;
-$cardsPositionOffset: 55vh * 0.06;
-$cardsScaleOffset: 0.08;
-$defaultTranslation: $cardsPositionOffset * $cardsTotal;
-$defaultScale: 1 - ($cardsScaleOffset * $cardsTotal);
 $fs-card-title: 1.125em;
 
 .container {
@@ -215,7 +210,6 @@ $fs-card-title: 1.125em;
     $primary-gradient-end 100%
   );
   opacity: 1;
-  transform: translateY($defaultTranslation) scale($defaultScale);
   transform-origin: 50%, 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   user-select: none;
@@ -236,33 +230,5 @@ $fs-card-title: 1.125em;
 .cardTitle {
   margin: 0 0 15px;
   font-size: $fs-card-title;
-}
-
-@for $i from 1 through $cardsTotal {
-  $index: $i - 1;
-  $translation: $cardsPositionOffset * $index;
-  $scale: 1 - ($cardsScaleOffset * $index);
-
-  .card:nth-child(#{$i}) {
-    z-index: $cardsTotal - $index;
-    opacity: 1;
-    transform: translateY($translation) scale($scale);
-
-    @if $i == 3 {
-      color: $c-red-25;
-      background-color: $c-red-25;
-    } @else if $i == 2 {
-      color: $c-red-50;
-      background-color: $c-red-50;
-    }
-
-    @if $i != 1 {
-      background-image: none;
-
-      @include after() {
-        @include sizing(0 0);
-      }
-    }
-  }
 }
 </style>
