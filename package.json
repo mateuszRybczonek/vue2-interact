@@ -1,6 +1,6 @@
 {
   "name": "vue2-interact",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Interact wrapper component for Vue.js apps",
   "author": "Mateusz Rybczonek <m.rybczonek@gmail.com>",
   "main": "dist/vue2-interact.common.js",
