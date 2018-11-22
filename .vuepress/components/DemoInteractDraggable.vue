@@ -2,7 +2,7 @@
   <div class="container">
     <section class="draggable-container">
       <Vue2InteractDraggable
-        ref="vue2-interact-draggable"
+        class="card"
         @draggedDown="draggedDown"
         @draggedLeft="draggedLeft"
         @draggedRight="draggedRight"
@@ -20,15 +20,13 @@
         :interact-lock-swipe-up="interactLockSwipeUp"
         :interact-out-of-sight-x-coordinate="500"
         :interact-x-threshold="200"
-        v-if="isShowing"
-        class="card isCurrent"
       >
         <div>
-          <h3 class="cardTitle">Drag me!</h3>
+          <h3 class="card__title">Drag me!</h3>
         </div>
       </Vue2InteractDraggable>
     </section>
-    <h3>Properties:</h3>
+    <h3>Available properties:</h3>
     <section class="switches">
       <article class="switches__article">
         <h4>interact-block</h4>
@@ -106,16 +104,8 @@
 
 <script>
 export default {
-  props: {
-    isSkipDisabled: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   data() {
     return {
-      isShowing: true,
       interactBlockDragDown: false,
       interactBlockDragLeft: false,
       interactBlockDragRight: false,
@@ -165,7 +155,7 @@ export default {
 <style lang="scss" scoped>
 @import "./styles/index.scss";
 
-$cardsWidth: 300px;
+$cardsWidth: 200px;
 $fs-card-title: 1.125em;
 
 .container {
@@ -173,16 +163,17 @@ $fs-card-title: 1.125em;
 }
 
 .draggable-container {
-  @include sizing(300px);
+  @include sizing($cardsWidth);
 
   display: flex;
-  margin: auto;
+  margin: auto auto 100px;
 }
 
 .switches {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
   &__article {
     margin-right: 30px;
   }
@@ -194,41 +185,5 @@ $fs-card-title: 1.125em;
 
 .card {
   @include card();
-  @include absolute(0);
-  @include sizing(200px);
-  @include flex-center();
-
-  display: flex;
-  max-height: 200px;
-  margin: auto;
-  font-size: $fs-h2;
-  font-weight: $fw-bold;
-  color: $c-white;
-  background-image: linear-gradient(
-    -180deg,
-    $primary-gradient-start 2%,
-    $primary-gradient-end 100%
-  );
-  opacity: 1;
-  transform-origin: 50%, 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  user-select: none;
-  pointer-events: none;
-  will-change: transform, opacity;
-
-  height: 100vw;
-
-  &.isCurrent {
-    pointer-events: auto;
-  }
-
-  &.isAnimating {
-    transition: transform 0.7s $ease-out-back;
-  }
-}
-
-.cardTitle {
-  margin: 0 0 15px;
-  font-size: $fs-card-title;
 }
 </style>
