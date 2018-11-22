@@ -15,8 +15,36 @@
 }
 
 @mixin card() {
+  @include absolute(0);
+  @include sizing(200px);
+  @include flex-center();
+
+  display: flex;
+  height: 100vw;
+  max-height: 200px;
+  margin: auto;
   border-radius: 15px;
   box-shadow: 0 30px 30px 0 rgba(0, 0, 0, 0.05);
+  font-size: $fs-h2;
+  font-weight: $fw-bold;
+  color: $c-white;
+  background-image: linear-gradient(
+    -180deg,
+    $primary-gradient-start 2%,
+    $primary-gradient-end 100%
+  );
+  opacity: 1;
+  transform-origin: 50%, 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  user-select: none;
+  pointer-events: none;
+  will-change: transform, opacity;
+  pointer-events: auto;
+
+  &__title {
+    margin: 0 0 15px;
+    font-size: $fs-card-title;
+  }
 }
 
 @mixin sizing($args, $prefix: "") {
@@ -38,7 +66,6 @@
 
   border-radius: 50%;
 }
-
 
 @mixin after() {
   &::after {

@@ -32,10 +32,79 @@ export default {
 
 ### 3. Demo
 
-
 <DemoInteractDraggable />
 
-[Sandbox example](https://codesandbox.io/s/241qzvq41y)
+[Sandbox demo](https://codesandbox.io/s/n34kv9n2wp)
+
+## Event bus usage
+Using event bus allows us to fire the `Vue2InteractDraggable` component methods from the outside of the component. 
+
+The component accepts `interact-event-bus-events` property tells `Vue2InteractDraggable` component to listen to those events and fire appropriate method when needed.
+
+Available events:
+  - `draggedDown`
+  - `draggedLeft`
+  - `draggedRight`
+  - `draggedUp`
+
+By emitting appropriate event in the event bus we can trigger the method from anywhere in the application.
+
+### 1. Import component and event bus
+```js
+import Vue from 'vue'
+import { Vue2InteractDraggable, InteractEventBus } from 'vue2-interact'
+
+export default {
+  components: {
+    Vue2InteractDraggable
+  }
+}
+```
+
+### 2. Use component
+```html
+<Vue2InteractDraggable
+  @draggedLeft="draggedLeft"
+  :interact-event-bus-events="interactEventBusEvents"
+  v-if="isShowing"
+  class="card isCurrent"
+>
+  <div>
+    <h3 class="cardTitle">Drag me!</h3>
+  </div>
+</Vue2InteractDraggable>
+
+<BaseButton @click="dragLeft" label="⇦" />
+```
+
+```js
+<script>
+const INTERACT_DRAGGED_LEFT = 'INTERACT_DRAGGED_LEFT';
+
+export default {
+  data() {
+    return {
+      isShowing: true,
+      interactEventBusEvents: {
+        draggedLeft: INTERACT_DRAGGED_LEFT,
+      },
+    };
+  },
+
+  methods: {
+    dragLeft() {
+      InteractEventBus.$emit(INTERACT_DRAGGED_LEFT);
+    },
+  }
+};
+</script>
+```
+
+### 3. Demo
+
+<DemoInteractDraggableWithEventBus />
+
+[Sandbox demo](https://codesandbox.io/s/5wo373kqwk)
 
 ## Listeners
 
@@ -119,3 +188,10 @@ Horizontal (X) distance to which the element will be moved when horizontal (X) t
 - default: 1000
 
 Vertical (Y) distance to which the element will be moved when vertical (Y) threshold is met at the end of drag.
+
+### interactEventBusEvents
+
+- type: Object
+- default: {}
+
+Allows to fire the `Vue2InteractDraggable` component methods from the outside of the component.
