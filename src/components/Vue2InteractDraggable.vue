@@ -1,6 +1,7 @@
 <template>
-  <div
+  <component
     ref="interactElement"
+    :is="tag"
     :class="{ 'vue-interact-animated': interactIsAnimating }"
     :style="{
       transform: interactTransformString,
@@ -8,7 +9,7 @@
     }"
   >
     <slot />
-  </div>
+  </component>
 </template>
 
 <script>
@@ -83,6 +84,10 @@ export default {
       type: Number,
       default: 300,
     },
+    tag: {
+      type: String,
+      default: 'div'
+    }
   },
 
   data() {
