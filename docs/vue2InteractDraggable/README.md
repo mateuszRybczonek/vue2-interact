@@ -37,7 +37,7 @@ export default {
 [Sandbox demo](https://codesandbox.io/s/n34kv9n2wp)
 
 ## Event bus usage
-Using event bus allows us to fire the `Vue2InteractDraggable` component methods from the outside of the component. 
+Using event bus allows us to fire the `Vue2InteractDraggable` component methods from the outside of the component.
 
 The component accepts `interact-event-bus-events` property tells `Vue2InteractDraggable` component to listen to those events and fire appropriate method when needed.
 
@@ -195,3 +195,10 @@ Vertical (Y) distance to which the element will be moved when vertical (Y) thres
 - default: {}
 
 Allows to fire the `Vue2InteractDraggable` component methods from the outside of the component.
+
+### tag
+
+- type: String
+- default: 'div'
+
+Defines the root element of the `Vue2InteractDraggable` component.
