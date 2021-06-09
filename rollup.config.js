@@ -1,12 +1,12 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import babel from 'rollup-plugin-babel'
-import uglify from 'rollup-plugin-uglify'
-import vue from 'rollup-plugin-vue'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import babel from 'rollup-plugin-babel';
+import { uglify } from 'rollup-plugin-uglify'
+import vue from 'rollup-plugin-vue';
 import CleanCSS from 'clean-css';
 import fs from 'fs';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
 const input = 'src/index.js';
 
@@ -23,7 +23,7 @@ export default [
       resolve(),
       vue({
         compileTemplate: true,
-        css: false
+        css: true
       }),
       commonjs(),
       babel({
