@@ -1,6 +1,7 @@
 <template>
   <div
     ref="interactElement"
+    class="dragging-container"
     :class="{ 'vue-interact-animated': interactIsAnimating }"
     :style="{
       transform: interactTransformString,
@@ -280,3 +281,9 @@ export default {
   },
 };
 </script>
+<style>
+.dragging-container, .dragging-container * {
+  -ms-touch-action: none;
+  touch-action: none;
+}
+</style>
