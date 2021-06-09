@@ -126,41 +126,44 @@ export default {
     const element = this.$refs.interactElement;
 
     interact(element).draggable({
-      onstart: () => {
-        this.interactIsAnimating = false;
-      },
+      listeners: {
+        start: () => {
+          this.interactIsAnimating = false;
+        },
+  
+        move: (event) => {
+          debugger;
+          let x = 0;
+          let y = 0;
+  
+          if (this.interactLockSwipeLeft && event.dx < 0) x = 0;
+          else if (this.interactLockSwipeRight && event.dx > 0) x = 0;
+          else x = this.interactLockXAxis ? 0 : (this.interactPosition.x || 0) + event.dx;
+  
+          if (this.interactLockSwipeUp && event.dy < 0) y = 0;
+          else if (this.interactLockSwipeDown && event.dy > 0) y = 0;
+          else y = this.interactLockYAxis ? 0 : (this.interactPosition.y || 0) + event.dy;
+  
+          let rotation = this.interactMaxRotation * (x / this.interactXThreshold);
+  
+          if (rotation > this.interactMaxRotation) rotation = this.interactMaxRotation;
+          else if (rotation < -this.interactMaxRotation) rotation = -this.interactMaxRotation;
 
-      onmove: (event) => {
-        let x = 0;
-        let y = 0;
-
-        if (this.interactLockSwipeLeft && event.dx < 0) x = 0;
-        else if (this.interactLockSwipeRight && event.dx > 0) x = 0;
-        else x = this.interactLockXAxis ? 0 : (this.interactPosition.x || 0) + event.dx;
-
-        if (this.interactLockSwipeUp && event.dy < 0) y = 0;
-        else if (this.interactLockSwipeDown && event.dy > 0) y = 0;
-        else y = this.interactLockYAxis ? 0 : (this.interactPosition.y || 0) + event.dy;
-
-        let rotation = this.interactMaxRotation * (x / this.interactXThreshold);
-
-        if (rotation > this.interactMaxRotation) rotation = this.interactMaxRotation;
-        else if (rotation < -this.interactMaxRotation) rotation = -this.interactMaxRotation;
-
-        this.interactSetPosition({ x, y, rotation });
-      },
-
-      onend: () => {
-        const { x: cardPositionX, y: cardPositionY } = this.interactPosition;
-        const { interactXThreshold, interactYThreshold } = this;
-        this.interactIsAnimating = true;
-
-        if (cardPositionX > interactXThreshold) this.interactDraggedRight();
-        else if (cardPositionX < -interactXThreshold) this.interactDraggedLeft();
-        else if (cardPositionY > interactYThreshold) this.interactDraggedDown();
-        else if (cardPositionY < -interactYThreshold) this.interactDraggedUp();
-        else this.interactResetCardPosition();
-      },
+          this.interactSetPosition({ x, y, rotation });
+        },
+  
+        end: () => {
+          const { x: cardPositionX, y: cardPositionY } = this.interactPosition;
+          const { interactXThreshold, interactYThreshold } = this;
+          this.interactIsAnimating = true;
+  
+          if (cardPositionX > interactXThreshold) this.interactDraggedRight();
+          else if (cardPositionX < -interactXThreshold) this.interactDraggedLeft();
+          else if (cardPositionY > interactYThreshold) this.interactDraggedDown();
+          else if (cardPositionY < -interactYThreshold) this.interactDraggedUp();
+          else this.interactResetCardPosition();
+        },
+      }
     });
   },
 

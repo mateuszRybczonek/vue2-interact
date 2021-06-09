@@ -1,7 +1,7 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 import vue from 'rollup-plugin-vue'
 import CleanCSS from 'clean-css';
 import fs from 'fs';
@@ -56,8 +56,8 @@ export default [
         }
       }),
       babel({
-        runtimeHelpers: true,
-        exclude: ['node_modules/**']
+        // runtimeHelpers: true,
+        // exclude: ['node_modules/**']
       }),
     ]
   }
