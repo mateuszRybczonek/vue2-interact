@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import interact from 'interact.js';
+import interact from 'interactjs';
 import InteractEventBus from '../interact-event-bus';
 
 export default {
